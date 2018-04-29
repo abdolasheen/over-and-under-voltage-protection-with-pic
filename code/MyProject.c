@@ -13,6 +13,7 @@ sbit LCD_D6_Direction at TRISD6_bit;
 sbit LCD_D7_Direction at TRISD7_bit;
 //keypad initialize
 char keypadPort at PORTB;
+//first function to return the pressed key as an int
 int key_clicked(){
    int kp ;
     Keypad_Init();
@@ -53,12 +54,13 @@ int key_clicked(){
         break;
 
    }
-     }while(kp==0);
+     }while(kp==0); //to keep checking if there is no key cliked
 
    return kp;
 
 
    }
+//seconed function to convert the analog value to digital and return it as float analog volt value
 float adc_value( void ){
  float digital_value ,volt;
  ADC_Init();
@@ -72,7 +74,7 @@ void main() {
         float ad;
         int max,min;
         char str[10];
-        trisc.B0=0;       
+        trisc.B0=0;// output port connected with test led
         portc.B0=1;
         Lcd_Init(); 
         ADC_Init();
@@ -80,14 +82,14 @@ void main() {
         Lcd_Cmd(_LCD_CLEAR);
 
 while(1){
-       ad =adc_value();
+       ad =adc_value();// return the anlog potintometer value in a variale ad :)
        Lcd_Out(1,1,"please enter max");
        key_clicked();
        key = key_clicked();
-       IntToStr(key , str);
+       IntToStr(key , str);//to display  it on keypad
        ltrim(str);
        Lcd_Out(2,8,str);
-       delay_ms(100);
+       delay_ms(1000);//wait until i can see what i have written
        max = key_clicked();
        Lcd_Cmd(_LCD_CLEAR);
        Lcd_Out(1,1,"please enter min");
@@ -96,7 +98,7 @@ while(1){
        IntToStr(key , str);
        ltrim(str);
        Lcd_Out(2,8,str);
-       delay_ms(100);
+       delay_ms(1000);
        min = key_clicked();
 
 
@@ -117,23 +119,15 @@ while(1){
           Lcd_Out(1,1,"normal operation ");
           delay_ms(1000);
           Lcd_Cmd(_LCD_CLEAR);
-       Lcd_Out(1,1,"change the potintometer");
-       delay_ms(2000);
+         Lcd_Out(1,1,"change the potintometer");
+         delay_ms(2000);
 
        };
-       
-       
-
-       
-
-       
-       
-       
+ /*note
+ i know this app have some bugs and this is your mission to take alook  at the code and try to fix the error cauz i am done with it :(
+ */
        
 
 }
-
-
-
 
 }
